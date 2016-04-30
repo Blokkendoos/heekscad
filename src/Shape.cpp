@@ -167,7 +167,7 @@ void CShape::CallMesh()
 {
 	double pixels_per_mm = wxGetApp().GetPixelScale();
 	BRepTools::Clean(m_shape);
-	BRepMesh::Mesh(m_shape, 1/pixels_per_mm);
+	BRepMesh_IncrementalMesh(m_shape, 1/pixels_per_mm);
 }
 
 void CShape::glCommands(bool select, bool marked, bool no_color)
@@ -264,7 +264,7 @@ void CShape::GetBox(CBox &box)
 	{
 		if(m_faces == NULL)create_faces_and_edges();
 		BRepTools::Clean(m_shape);
-		BRepMesh::Mesh(m_shape, 1.0);
+		BRepMesh_IncrementalMesh(m_shape, 1.0);
 		if(m_faces)m_faces->GetBox(m_box);
 	}
 
@@ -1026,7 +1026,7 @@ bool CShape::ExportSolidsFile(const std::list<HeeksObj*>& objects, const wxChar*
 
 void CShape::GetTriangles(void(*callbackfunc)(const double* x, const double* n), double cusp, bool just_one_average_normal){
 	BRepTools::Clean(m_shape);
-	BRepMesh::Mesh(m_shape, cusp);
+	BRepMesh_IncrementalMesh(m_shape, cusp);
 
 	return IdNamedObjList::GetTriangles(callbackfunc, cusp, just_one_average_normal);
 }

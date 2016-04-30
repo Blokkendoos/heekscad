@@ -94,6 +94,7 @@
 #include <BRepFilletAPI_MakeFillet2d.hxx>
 #include <BRepGProp.hxx>
 #include <BRepMesh.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakeEvolved.hxx>
 #include <BRepOffsetAPI_MakeOffset.hxx>
@@ -229,6 +230,11 @@
 #include "wx/popupwin.h"
 #include <wx/print.h>
 #include <wx/printdlg.h>
+#include <wx/propgrid/propgrid.h>
+#include <wx/propgrid/advprops.h>
+//#include <wx/propgrid/property.h>
+//#include <wx/propgrid/propgriddefs.h>
+//#include <wx/propgrid/manager.h>
 #include "wx/settings.h"
 #include "wx/scrolwin.h"
 #include "wx/sizer.h"

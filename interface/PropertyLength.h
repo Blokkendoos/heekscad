@@ -7,7 +7,8 @@
 
 #include "PropertyDouble.h"
 
-class PropertyLength:public PropertyDouble{
+class PropertyLength:public PropertyDouble
+{
 public:
 	PropertyLength(const wxChar* t, double initial_value, HeeksObj* object, void(*callbackfunc)(double, HeeksObj*) = NULL, void(*selectcallback)(HeeksObj*) = NULL);
 

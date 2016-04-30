@@ -7,7 +7,8 @@
 
 #include "Property.h"
 
-class PropertyInt:public Property{
+class PropertyInt:public Property
+{
 private:
 	wxString title;
 

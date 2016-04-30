@@ -6,11 +6,15 @@
 
 #include "PropertyFile.h"
 
-PropertyFile::PropertyFile(const wxChar* t, const wxChar* v, HeeksObj* object, void(*callbackfunc)(const wxChar*, HeeksObj*)):PropertyString(t, v, object, callbackfunc)
-{
-}
+PropertyFile::PropertyFile(const wxChar* t
+						 , const wxChar* v
+						 , HeeksObj* object
+						 , void(*callbackfunc)(const wxChar*, HeeksObj*)
+						 ) : PropertyString(t, v, object, callbackfunc)
+{}
 
-Property *PropertyFile::MakeACopy(void)const{
+Property *PropertyFile::MakeACopy(void)const
+{
 	PropertyFile* new_object = new PropertyFile(*this);
 	return new_object;
 }

@@ -6,7 +6,8 @@
 
 #include "../interface/Property.h"
 
-class PropertyVertex:public Property{
+class PropertyVertex:public Property
+{
 protected:
 	wxString title;
 
@@ -30,7 +31,8 @@ public:
 	virtual bool xyOnly()const{return false;}
 };
 
-class PropertyVertex2d: public PropertyVertex{
+class PropertyVertex2d: public PropertyVertex
+{
 public:
 	PropertyVertex2d(const wxChar *t, const double *initial_vt, HeeksObj* object, void(*callbackfunc)(const double* vt, HeeksObj* m_object) = NULL, void(*selectcallback)(HeeksObj*) = NULL):PropertyVertex(t, initial_vt, object, callbackfunc, selectcallback){}
 
@@ -38,7 +40,8 @@ public:
 	bool xyOnly()const{return true;}
 };
 
-class PropertyVector: public PropertyVertex{
+class PropertyVector: public PropertyVertex
+{
 	// like a PropertyVertex, but isn't affected by view units
 public:
 	PropertyVector(const wxChar *t, const double *initial_vt, HeeksObj* object, void(*callbackfunc)(const double* vt, HeeksObj* m_object) = NULL) : PropertyVertex(t, initial_vt, object, callbackfunc){m_affected_by_view_units = false;}

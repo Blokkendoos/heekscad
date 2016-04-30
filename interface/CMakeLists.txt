@@ -7,7 +7,12 @@ add_definitions ( -Wall -DHEEKSCAD -DUNICODE -DTIXML_USE_STL )
 
 # wxWidgets
 find_package( wxWidgets REQUIRED COMPONENTS base core gl )
-include(${wxWidgets_USE_FILE})
+##JvO
+#include(${wxWidgets_USE_FILE})
+set( wxWidgets_LIBRARIES "${wxWidgets_LIBRARIES} -liconv -lwx_osx_cocoau_aui-3.1 -lwx_osx_cocoau_propgrid-3.1" )
+string (REPLACE ";" " " wxWidgets_LIBRARIES "${wxWidgets_LIBRARIES}")
+set( wxWidgets_INCLUDE_DIRS "/opt/local/Library/Frameworks/wxWidgets.framework/Versions/wxWidgets/3.1/lib/wx/include/osx_cocoa-unicode-3.1;/opt/local/Library/Frameworks/wxWidgets.framework/Versions/wxWidgets/3.1/include/wx-3.1" )
+MESSAGE(STATUS "wxWidgets_LIBRARIES is: " ${wxWidgets_LIBRARIES})
 
 # python libs
 find_package( PythonLibs REQUIRED )

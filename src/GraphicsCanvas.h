@@ -47,21 +47,22 @@ public:
 	void WidthAndHeightChanged(int w, int h){m_w = w; m_h = h;}
 	wxSize GetViewportSize(){return wxSize(m_w, m_h);}
 	void GetViewportSize(int *w, int *h){*w = m_w; *h = m_h;}
-    void ViewportOnMouse( wxMouseEvent& event );
+	void ViewportOnMouse( wxMouseEvent& event );
 	void OnMagExtents(bool rotate, int margin);
 };
 
 class CGraphicsCanvas: public wxGLCanvas, public CViewport, Observer
 {
+	wxGLContext* m_context;
+
 public:
+	CGraphicsCanvas(wxWindow* parent);
+	virtual ~CGraphicsCanvas();
 
-    CGraphicsCanvas(wxWindow* parent);
-    virtual ~CGraphicsCanvas(){};
-
-    void OnPaint(wxPaintEvent& event);
-    void OnSize(wxSizeEvent& event);
+	void OnPaint(wxPaintEvent& event);
+	void OnSize(wxSizeEvent& event);
 	void OnEraseBackground(wxEraseEvent& event);
-    void OnMouse( wxMouseEvent& event );
+	void OnMouse( wxMouseEvent& event );
 	void OnMenuEvent(wxCommandEvent& WXUNUSED(event));
 
 	// Observer's virtual functions
@@ -91,5 +92,5 @@ public:
 	void WindowMag(wxRect &window_box);
 
 private:
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };

@@ -6,21 +6,29 @@
 
 #include "PropertyChoice.h"
 
-PropertyChoice::PropertyChoice(const wxChar* t, std::list< wxString > &choices, int initial_index, HeeksObj* object, void(*callbackfunc)(int, HeeksObj*, bool), void(*selectcallback)(HeeksObj*)):Property(object, selectcallback){
+PropertyChoice::PropertyChoice(const wxChar* t
+								, std::list< wxString > &choices
+								, int initial_index
+								, HeeksObj* object
+								, void(*callbackfunc)(int, HeeksObj*, bool)
+								, void(*selectcallback)(HeeksObj*)
+								) : Property(object, selectcallback)
+{
 	m_callbackfunc = callbackfunc;
 	m_choices = choices;
 	m_initial_index = initial_index;
 	title = wxString(t);
 }
 
-PropertyChoice::~PropertyChoice(){
-}
+PropertyChoice::~PropertyChoice(){}
 
-const wxChar* PropertyChoice::GetShortString(void)const{
+const wxChar* PropertyChoice::GetShortString(void)const
+{
 	return title.c_str();
 }
 
-Property *PropertyChoice::MakeACopy(void)const{
+Property *PropertyChoice::MakeACopy(void)const
+{
 	PropertyChoice* new_object = new PropertyChoice(*this);
 	return new_object;
 }

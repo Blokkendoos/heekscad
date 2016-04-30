@@ -6,11 +6,14 @@
 
 #include "PropertyList.h"
 
-PropertyList::PropertyList(const wxChar* t, void(*selectcallback)(HeeksObj*)):Property(NULL, selectcallback){
+PropertyList::PropertyList(const wxChar* t
+						 , void (*selectcallback)(HeeksObj*)
+						 ) : Property(NULL, selectcallback){
 	title = wxString(t);
 }
 
-PropertyList::~PropertyList(){
+PropertyList::~PropertyList()
+{
 #if 0
 	std::list< Property* >::iterator It;
 	for(It = m_list.begin(); It != m_list.end(); It++)
@@ -21,11 +24,13 @@ PropertyList::~PropertyList(){
 #endif
 }
 
-const wxChar* PropertyList::GetShortString(void)const{
+const wxChar* PropertyList::GetShortString(void)const
+{
 	return title.c_str();
 }
 
-Property *PropertyList::MakeACopy(void)const{
+Property *PropertyList::MakeACopy(void)const
+{
 	PropertyList* new_object = new PropertyList(*this);
 	return new_object;
 }

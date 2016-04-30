@@ -6,20 +6,26 @@
 
 #include "PropertyCheck.h"
 
-PropertyCheck::PropertyCheck(const wxChar* t, bool initial_value, HeeksObj* object,  void(*callbackfunc)(bool, HeeksObj*), void(*selectcallback)(HeeksObj*)):Property(object, selectcallback){
+PropertyCheck::PropertyCheck(const wxChar* t
+							, bool initial_value
+							, HeeksObj* object
+							, void(*callbackfunc)(bool, HeeksObj*)
+							, void(*selectcallback)(HeeksObj*)
+							) : Property(object, selectcallback)
+{
 	m_callbackfunc = callbackfunc;
-	m_initial_value = initial_value;
 	title = wxString(t);
 }
 
-PropertyCheck::~PropertyCheck(){
-}
+PropertyCheck::~PropertyCheck(){}
 
-const wxChar* PropertyCheck::GetShortString(void)const{
+const wxChar* PropertyCheck::GetShortString(void)const
+{
 	return title.c_str();
 }
 
-Property *PropertyCheck::MakeACopy(void)const{
+Property *PropertyCheck::MakeACopy(void)const
+{
 	PropertyCheck* new_object = new PropertyCheck(*this);
 	return new_object;
 }

@@ -103,6 +103,11 @@ wxFrame* CHeeksCADInterface::GetMainFrame()
 	return wxGetApp().m_frame;
 }
 
+wxPanel* CHeeksCADInterface::GetMainPanel()
+{
+	return wxGetApp().m_frame->m_panel;
+}
+
 wxWindow* CHeeksCADInterface::GetGraphicsCanvas()
 {
 	return wxGetApp().m_frame->m_graphics;

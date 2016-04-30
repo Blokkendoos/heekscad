@@ -64,6 +64,7 @@ public:
 	virtual void Repaint(bool soon = false);
 	virtual bool GetCamera(double* pos, double* target, double* up, bool& perspective, double& field_of_view, double& near_plane, double& far_plane);
 	virtual wxFrame* GetMainFrame();
+	virtual wxPanel* GetMainPanel();
 	virtual wxWindow* GetGraphicsCanvas();
 #ifdef WIN32
 	virtual HGLRC GetRC();

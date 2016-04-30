@@ -24,11 +24,11 @@ CViewport::CViewport(int w, int h):m_frozen(false), m_refresh_wanted_on_thaw(fal
 }
 
 BEGIN_EVENT_TABLE(CGraphicsCanvas, wxGLCanvas)
-    EVT_SIZE(CGraphicsCanvas::OnSize)
+	EVT_SIZE(CGraphicsCanvas::OnSize)
 	EVT_ERASE_BACKGROUND(CGraphicsCanvas::OnEraseBackground)
-    EVT_PAINT(CGraphicsCanvas::OnPaint)
-    EVT_MOUSE_EVENTS(CGraphicsCanvas::OnMouse)
-    EVT_MENU_RANGE(ID_FIRST_POP_UP_MENU_TOOL, ID_FIRST_POP_UP_MENU_TOOL + 1000, CGraphicsCanvas::OnMenuEvent)
+	EVT_PAINT(CGraphicsCanvas::OnPaint)
+	EVT_MOUSE_EVENTS(CGraphicsCanvas::OnMouse)
+	EVT_MENU_RANGE(ID_FIRST_POP_UP_MENU_TOOL, ID_FIRST_POP_UP_MENU_TOOL + 1000, CGraphicsCanvas::OnMenuEvent)
 	EVT_KEY_DOWN(CGraphicsCanvas::OnKeyDown)
 	EVT_KEY_UP(CGraphicsCanvas::OnKeyUp)
 	EVT_CHAR(CGraphicsCanvas::OnCharEvent)
@@ -52,13 +52,20 @@ static int graphics_attrib_list[] = {
 		0
 	};
 
-
 CGraphicsCanvas::CGraphicsCanvas(wxWindow* parent)
-        : wxGLCanvas(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, _T("some text"), graphics_attrib_list),CViewport(0, 0)
+		: wxGLCanvas( parent, wxID_ANY, (const int *) graphics_attrib_list, wxDefaultPosition, wxDefaultSize, 0, _T("some text") ), CViewport(0, 0)
 {
 	m_render_on_front_done = false;
 
+	m_context = new wxGLContext(this);
+	m_context->SetCurrent(*this);
+
 	wxGetApp().RegisterObserver(this);
+}
+
+CGraphicsCanvas::~CGraphicsCanvas()
+{
+	delete m_context;
 }
 
 void CViewport::SetViewport()
@@ -242,18 +249,19 @@ void CViewport::glCommands()
 
 void CGraphicsCanvas::OnPaint( wxPaintEvent& WXUNUSED(event) )
 {
-    /* must always be here */
-    wxPaintDC dc(this);
+	/* must always be here */
+	wxPaintDC dc(this);
 
 #ifndef __WXMOTIF__
-    if (!GetContext()) return;
+	//if (!GetContext()) return;
+	if (!m_context) return;
 #endif
 
-    SetCurrent();
-
+	m_context->SetCurrent(*this);
+	
 	glCommands();
 
-    SwapBuffers();
+	SwapBuffers();
 
 	// draw any xor items wanted on the front buffer
 	DrawFront();
@@ -261,10 +269,10 @@ void CGraphicsCanvas::OnPaint( wxPaintEvent& WXUNUSED(event) )
 
 void CGraphicsCanvas::OnSize(wxSizeEvent& event)
 {
-    // this is also necessary to update the context on some platforms
-    wxGLCanvas::OnSize(event);
-    int w, h;
-    GetClientSize(&w, &h);
+	// this is also necessary to update the context on some platforms
+	//wxGLCanvas::OnSize(event);
+	int w, h;
+	GetClientSize(&w, &h);
 	WidthAndHeightChanged(w, h);
 	Refresh();
 }
@@ -304,7 +312,7 @@ void CViewport::FrontRender(void){
 
 void CViewport::SetIdentityProjection(){
 	glViewport(0, 0, m_w, m_h);
-    glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(- 0.5, m_w - 0.5, -0.5, m_h - 0.5, 0,10);
 	glMatrixMode(GL_MODELVIEW);
@@ -348,7 +356,7 @@ void CGraphicsCanvas::OnMouse( wxMouseEvent& event )
 	if(wxGetApp().m_property_grid_validation)return;
 
 	if(event.Entering()){
-	    SetCurrent();
+		m_context->SetCurrent(*this);
 		SetFocus(); // so middle wheel works
 	}
 
@@ -580,7 +588,7 @@ void CViewport::SetViewPoint(int margin){
 	if(m_orthogonal){
 		gp_Vec vz = getClosestOrthogonal(-m_view_point.forwards_vector());
 		gp_Vec v2 = m_view_point.m_vertical;
-		v2 = v2 + vz * (-(v2 * vz)); // remove any component in new vz direction	    
+		v2 = v2 + vz * (-(v2 * vz)); // remove any component in new vz direction		
 		gp_Vec vy = getClosestOrthogonal(v2);
 		m_view_point.SetView(vy, vz, margin);
 		StoreViewPoint();
@@ -663,7 +671,7 @@ void CViewport::FindMarkedObject(const wxPoint &point, MarkedObject* marked_obje
 }
 
 void CViewport::DrawWindow(wxRect &rect, bool allow_extra_bits){
-    glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
 	glOrtho(- 0.5, m_w - 0.5, -0.5, m_h - 0.5, 0,10);
@@ -714,6 +722,6 @@ void CViewport::DrawWindow(wxRect &rect, bool allow_extra_bits){
 	
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
+	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 }

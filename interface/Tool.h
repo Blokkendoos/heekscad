@@ -15,18 +15,30 @@ public:
 	wxBitmap* m_bitmap;
 	int m_icon_size;
 
-	Tool():m_bitmap(NULL){}
-	virtual ~Tool(){if(m_bitmap)delete m_bitmap;}
+	Tool() : m_bitmap(NULL) {}
+	virtual ~Tool() {if(m_bitmap)delete m_bitmap;}
 
 	virtual void Run() = 0;
 	virtual const wxChar* GetTitle() = 0;
-	virtual const wxChar* GetToolTip(){return GetTitle();}
-	virtual bool Disabled(){return false;}
-	virtual bool Checked(){return false;}
+	virtual const wxChar* GetToolTip() {return GetTitle();}
+	virtual bool Disabled() {return false;}
+	virtual bool Checked() {return false;}
 	virtual bool IsAToolList() {return false;}
 	virtual bool IsSeparator() const {return false;}
-	virtual wxString BitmapPath(){return _T("");}
-	virtual wxBitmap* Bitmap(){if(m_bitmap && m_icon_size == ToolImage::GetBitmapSize())return m_bitmap; wxString str = BitmapPath(); if(str.Len() > 0){delete m_bitmap; m_bitmap = new wxBitmap(ToolImage(str)); m_icon_size = ToolImage::GetBitmapSize();}return m_bitmap;}
+	virtual wxString BitmapPath() {return _T("");}
+	virtual wxBitmap* Bitmap()
+	{
+	    if(!m_bitmap || m_icon_size != ToolImage::GetBitmapSize())
+	    {
+            wxString str = BitmapPath(); 
+            if(str.Len() > 0) {
+                delete m_bitmap; 
+                m_bitmap = new wxBitmap(ToolImage(str)); 
+                m_icon_size = ToolImage::GetBitmapSize();
+            }
+	    }
+	    return m_bitmap;
+	}
 };
 
 // splitting Toolbar tools from Undoable tools

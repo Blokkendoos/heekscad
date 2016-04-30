@@ -15,7 +15,14 @@ else() #look for OpenCASCADE
 endif()
 
 find_package( OpenGL REQUIRED )
+
 find_package( wxWidgets REQUIRED COMPONENTS base core gl aui )
+set( wxWidgets_LIBRARIES "${wxWidgets_LIBRARIES} -liconv -lwx_osx_cocoau_aui-3.1 -lwx_osx_cocoau_propgrid-3.1" )
+string (REPLACE ";" " " wxWidgets_LIBRARIES "${wxWidgets_LIBRARIES}")
+set( wxWidgets_INCLUDE_DIRS "/opt/local/Library/Frameworks/wxWidgets.framework/Versions/wxWidgets/3.1/lib/wx/include/osx_cocoa-unicode-3.1;/opt/local/Library/Frameworks/wxWidgets.framework/Versions/wxWidgets/3.1/include/wx-3.1" )
+MESSAGE(STATUS "wxWidgets_LIBRARIES is: " ${wxWidgets_LIBRARIES})
+MESSAGE(STATUS "wxWidgets_INCLUDE_DIRS: " ${wxWidgets_INCLUDE_DIRS})
+
 find_package( PythonLibs REQUIRED )
 
 include(${wxWidgets_USE_FILE})
@@ -120,13 +127,8 @@ set( heekscad_HDRS
     ViewZooming.h
     Window.h
     Wire.h
-    advprops.h
     dxf.h
     glfont2.h
-    manager.h
-    odcombo.h
-    propdev.h
-    propgrid.h
     stdafx.h
     svg.h
     wxImageLoader.h
@@ -219,13 +221,8 @@ set( heekscad_SRCS
     ViewZooming.cpp
     Window.cpp
     Wire.cpp
-    advprops.cpp
     dxf.cpp
     glfont2.cpp
-    manager.cpp
-    odcombo.cpp
-    propgrid.cpp
-    props.cpp
     stdafx.cpp
     svg.cpp
     wxImageLoader.cpp
@@ -241,6 +238,7 @@ target_link_libraries( heekscad
                        ${HeeksCAD_LIBS} ${libarea_LIBRARIES} )
 
 
+message(STATUS "src/CMakeList.txt")
 message(STATUS "wxWidgets_LIBRARIES: ${wxWidgets_LIBRARIES}")
 message(STATUS "wxWidgets_ROOT_DIR: ${wxWidgets_ROOT_DIR}")
 message(STATUS "wxWidgets_INCLUDE_DIRS: ${wxWidgets_INCLUDE_DIRS}")

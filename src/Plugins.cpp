@@ -10,7 +10,7 @@
 
 enum
 {
-    ID_BUTTON_ADD,
+	ID_BUTTON_ADD,
 	ID_BUTTON_EDIT,
 	ID_BUTTON_REMOVE,
 	ID_BUTTON_PLUGIN_BROWSE,
@@ -27,15 +27,15 @@ CPluginItemDialog::CPluginItemDialog(wxWindow *parent, const wxString& title, Pl
 {
 	m_pd = &pd;
 
-    m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
-    // create buttons
-    wxButton *button1 = new wxButton(m_panel, wxID_OK);
-    wxButton *button2 = new wxButton(m_panel, wxID_CANCEL);
+	// create buttons
+	wxButton *button1 = new wxButton(m_panel, wxID_OK);
+	wxButton *button2 = new wxButton(m_panel, wxID_CANCEL);
 
-    wxBoxSizer *mainsizer = new wxBoxSizer( wxVERTICAL );
+	wxBoxSizer *mainsizer = new wxBoxSizer( wxVERTICAL );
 
-    wxFlexGridSizer *gridsizer = new wxFlexGridSizer(3, 5, 5);
+	wxFlexGridSizer *gridsizer = new wxFlexGridSizer(3, 5, 5);
 	gridsizer->Add(new wxStaticText(m_panel, wxID_ANY, _("Name")), wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
 	m_name_text_ctrl = new wxTextCtrl(m_panel, wxID_ANY, pd.name);
 	gridsizer->Add(m_name_text_ctrl, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL).Expand());
@@ -44,7 +44,7 @@ CPluginItemDialog::CPluginItemDialog(wxWindow *parent, const wxString& title, Pl
 	m_path_text_ctrl = new wxTextCtrl(m_panel, wxID_ANY, pd.path, wxDefaultPosition, wxSize(400, 0));
 	gridsizer->Add(m_path_text_ctrl, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL).Expand());
 	wxButton* browse_button = new wxButton(m_panel, ID_BUTTON_PLUGIN_BROWSE, _T("..."));
-    gridsizer->Add(browse_button, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+	gridsizer->Add(browse_button, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
 
 	if(pd.hard_coded)
 	{
@@ -56,24 +56,24 @@ CPluginItemDialog::CPluginItemDialog(wxWindow *parent, const wxString& title, Pl
 
 	gridsizer->AddGrowableCol(1, 1);
 
-    wxBoxSizer *bottomsizer = new wxBoxSizer( wxHORIZONTAL );
+	wxBoxSizer *bottomsizer = new wxBoxSizer( wxHORIZONTAL );
 
-    bottomsizer->Add( button1, 0, wxALL, 10 );
-    bottomsizer->Add( button2, 0, wxALL, 10 );
+	bottomsizer->Add( button1, 0, wxALL, 10 );
+	bottomsizer->Add( button2, 0, wxALL, 10 );
 
-    mainsizer->Add( gridsizer, wxSizerFlags().Align(wxALIGN_CENTER).Border(wxALL, 10).Expand() );
-    mainsizer->Add( bottomsizer, wxSizerFlags().Align(wxALIGN_CENTER) );
+	mainsizer->Add( gridsizer, wxSizerFlags().Align(wxALIGN_CENTER).Border(wxALL, 10).Expand() );
+	mainsizer->Add( bottomsizer, wxSizerFlags().Align(wxALIGN_CENTER) );
 
-    // tell frame to make use of sizer
-    m_panel->SetAutoLayout( true );
-    m_panel->SetSizer( mainsizer );
+	// tell frame to make use of sizer
+	m_panel->SetAutoLayout( true );
+	m_panel->SetSizer( mainsizer );
 
 #ifndef __WXWINCE__
-    // don't allow frame to get smaller than what the sizers tell ye
-    mainsizer->SetSizeHints( this );
+	// don't allow frame to get smaller than what the sizers tell ye
+	mainsizer->SetSizeHints( this );
 #endif
 
-    Show(true);
+	Show(true);
 }
 
 void CPluginItemDialog::OnButtonOK(wxCommandEvent& event)
@@ -114,13 +114,13 @@ void CPluginItemDialog::OnButtonBrowse(wxCommandEvent& event)
 #endif
 	wxString wildcard_string = wxString(_("shared library files")) + _T(" |") + ext_str;
 
-    wxFileDialog dialog(this, _("Choose shared library file"), wxEmptyString, wxEmptyString, wildcard_string);
-    dialog.CentreOnParent();
+	wxFileDialog dialog(this, _("Choose shared library file"), wxEmptyString, wxEmptyString, wildcard_string);
+	dialog.CentreOnParent();
 
-    if (dialog.ShowModal() == wxID_OK)
-    {
+	if (dialog.ShowModal() == wxID_OK)
+	{
 		m_path_text_ctrl->SetValue(dialog.GetPath());
-    }
+	}
 }
 
 BEGIN_EVENT_TABLE( CPluginsDialog, wxDialog )
@@ -137,43 +137,43 @@ END_EVENT_TABLE()
 CPluginsDialog::CPluginsDialog(wxWindow *parent):wxDialog(parent, wxID_ANY, _("HeeksCAD plugin libraries"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
    // make a panel with some controls
-    m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	m_panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
 	ReadPluginsList(m_plugins);
 
-    CreateCheckListbox();
+	CreateCheckListbox();
 
-    // create buttons
-    wxButton *button1 = new wxButton(m_panel, ID_BUTTON_ADD, _("New"));
-    wxButton *button2 = new wxButton(m_panel, ID_BUTTON_EDIT, _("Edit"));
-    wxButton *button3 = new wxButton(m_panel, ID_BUTTON_REMOVE, _("Delete"));
-    wxButton *button4 = new wxButton(m_panel, wxID_OK);
-    wxButton *button5 = new wxButton(m_panel, wxID_CANCEL);
+	// create buttons
+	wxButton *button1 = new wxButton(m_panel, ID_BUTTON_ADD, _("New"));
+	wxButton *button2 = new wxButton(m_panel, ID_BUTTON_EDIT, _("Edit"));
+	wxButton *button3 = new wxButton(m_panel, ID_BUTTON_REMOVE, _("Delete"));
+	wxButton *button4 = new wxButton(m_panel, wxID_OK);
+	wxButton *button5 = new wxButton(m_panel, wxID_CANCEL);
 
-    wxBoxSizer *mainsizer = new wxBoxSizer( wxVERTICAL );
+	wxBoxSizer *mainsizer = new wxBoxSizer( wxVERTICAL );
 
-    mainsizer->Add( m_pListBox, 1, wxGROW|wxALL, 10 );
+	mainsizer->Add( m_pListBox, 1, wxGROW|wxALL, 10 );
 
-    wxBoxSizer *bottomsizer = new wxBoxSizer( wxHORIZONTAL );
+	wxBoxSizer *bottomsizer = new wxBoxSizer( wxHORIZONTAL );
 
-    bottomsizer->Add( button1, 0, wxALL, 10 );
-    bottomsizer->Add( button2, 0, wxALL, 10 );
-    bottomsizer->Add( button3, 0, wxALL, 10 );
-    bottomsizer->Add( button4, 0, wxALL, 10 );
-    bottomsizer->Add( button5, 0, wxALL, 10 );
+	bottomsizer->Add( button1, 0, wxALL, 10 );
+	bottomsizer->Add( button2, 0, wxALL, 10 );
+	bottomsizer->Add( button3, 0, wxALL, 10 );
+	bottomsizer->Add( button4, 0, wxALL, 10 );
+	bottomsizer->Add( button5, 0, wxALL, 10 );
 
-    mainsizer->Add( bottomsizer, 0, wxCENTER );
+	mainsizer->Add( bottomsizer, 0, wxCENTER );
 
-    // tell frame to make use of sizer
-    m_panel->SetAutoLayout( true );
-    m_panel->SetSizer( mainsizer );
+	// tell frame to make use of sizer
+	m_panel->SetAutoLayout( true );
+	m_panel->SetSizer( mainsizer );
 
 #ifndef __WXWINCE__
-    // don't allow frame to get smaller than what the sizers tell ye
-    mainsizer->SetSizeHints( this );
+	// don't allow frame to get smaller than what the sizers tell ye
+	mainsizer->SetSizeHints( this );
 #endif
 
-    Show(true);
+	Show(true);
 }
 
 void ReadPluginsList(std::list<PluginData> &plugins)
@@ -228,7 +228,8 @@ void ReadPluginsList(std::list<PluginData> &plugins)
   #else
 		wxStandardPaths sp;
   #endif
-		wxString sCncplugPath = sp.GetInstallPrefix()  + wxT("/lib/libheekscnc.so");
+		//wxString sCncplugPath = sp.GetInstallPrefix() + wxT("/lib/libheekscnc.so");
+		wxString sCncplugPath = sp.GetResourcesDir() + wxT("/../lib/libheekscnc.so");
 #endif
 		wprintf(_T("Attempt to automatically load HeeksCNC: ") + sCncplugPath  + wxT("\n"));
 		if (wxFileName::FileExists(sCncplugPath)) {
@@ -268,7 +269,7 @@ void ReadPluginsList(std::list<PluginData> &plugins)
 
 
 	wxString plugins_file = wxGetApp().GetExeFolder() + _T("/plugins.txt");
-    ifstream ifs(Ttc(plugins_file.c_str()));
+	ifstream ifs(Ttc(plugins_file.c_str()));
 	if(!(!ifs))
 	{
 		char s[1024] = "";
@@ -300,28 +301,28 @@ void ReadPluginsList(std::list<PluginData> &plugins)
 
 void CPluginsDialog::CreateCheckListbox(long flags)
 {
-    wxString *astrChoices = new wxString[m_plugins.size()];
-    unsigned int ui = 0;
+	wxString *astrChoices = new wxString[m_plugins.size()];
+	unsigned int ui = 0;
 	for ( std::list<PluginData>::iterator It = m_plugins.begin(); It != m_plugins.end(); It++, ui++ )
 	{
 		PluginData &pd = *It;
 		astrChoices[ui] = pd.name;
 	}
 
-    m_pListBox = new wxCheckListBox
-        (
-         m_panel,               // parent
-         ID_LISTBOX_CONTROL,       // control id
-         wxPoint(10, 10),       // listbox poistion
-         wxSize(400, 100),      // listbox size
-         m_plugins.size(),		// number of strings
-         astrChoices,           // array of strings
-         flags
-        );
+	m_pListBox = new wxCheckListBox
+		(
+		 m_panel,				// parent
+		 ID_LISTBOX_CONTROL,	   // control id
+		 wxPoint(10, 10),		// listbox poistion
+		 wxSize(400, 100),		// listbox size
+		 m_plugins.size(),		// number of strings
+		 astrChoices,			// array of strings
+		 flags
+		);
 
-    delete [] astrChoices;
+	delete [] astrChoices;
 
-    ui = 0;
+	ui = 0;
 	for ( std::list<PluginData>::iterator It = m_plugins.begin(); It != m_plugins.end(); It++, ui++ )
 	{
 		PluginData &pd = *It;
@@ -430,7 +431,7 @@ void CPluginsDialog::OnButtonCancel(wxCommandEvent& event)
 
 void CPluginsDialog::OnListboxDblClick(wxCommandEvent& WXUNUSED(event))
 {
-    int selection = m_pListBox->GetSelection();
+	int selection = m_pListBox->GetSelection();
 
 	EditSelected(selection);
 }

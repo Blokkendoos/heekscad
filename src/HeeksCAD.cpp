@@ -523,7 +523,7 @@ bool HeeksCADapp::OnInit()
 		wprintf(_T("applications global data directory: ") + sp.GetDataDir()  + _T("\n"));
 		wprintf(_T("documents directory: ") + sp.GetDocumentsDir()  + _T("\n"));
 		wprintf(_T("executable path: ") + sp.GetExecutablePath()  + _T("\n"));
-		wprintf(_T("install prefix: ") + sp.GetInstallPrefix()  + _T("\n"));
+		//wprintf(_T("install prefix: ") + sp.GetInstallPrefix()  + _T("\n"));
 		wprintf(_T("Local data directory: ") + sp.GetLocalDataDir()  + _T("\n"));
 		wprintf(_T("plugins directory: ") + sp.GetPluginsDir()  + _T("\n"));
 		wprintf(_T("resource directory: ") + sp.GetResourcesDir()  + _T("\n"));
@@ -3205,11 +3205,11 @@ void HeeksCADapp::GetOptions(std::list<Property *> *list)
 	view_options->m_list.push_back( new PropertyCheck(_("reverse mouse wheel"), !(mouse_wheel_forward_away), NULL, on_set_reverse_mouse_wheel));
 	view_options->m_list.push_back( new PropertyCheck(_("reverse zooming mode"), ViewZooming::m_reversed, NULL, on_set_reverse_zooming));
 	view_options->m_list.push_back( new PropertyCheck(_("Ctrl key does rotate"), ctrl_does_rotate, NULL, on_set_ctrl_does_rotate));
-	view_options->m_list.push_back(new PropertyCheck(_("show datum"), m_show_datum_coords_system, NULL, on_set_show_datum));
-	view_options->m_list.push_back(new PropertyCheck(_("datum is solid"), m_datum_coords_system_solid_arrows, NULL, on_set_solid_datum));
-	view_options->m_list.push_back(new PropertyDouble(_("datum size"), CoordinateSystem::size, NULL, on_set_datum_size));
-	view_options->m_list.push_back(new PropertyCheck(_("datum size is pixels not mm"), CoordinateSystem::size_is_pixels, NULL, on_set_size_is_pixels));
-	view_options->m_list.push_back(new PropertyCheck(_("show ruler"), m_show_ruler, NULL, on_set_show_ruler));
+	view_options->m_list.push_back( new PropertyCheck(_("show datum"), m_show_datum_coords_system, NULL, on_set_show_datum));
+	view_options->m_list.push_back( new PropertyCheck(_("datum is solid"), m_datum_coords_system_solid_arrows, NULL, on_set_solid_datum));
+	view_options->m_list.push_back( new PropertyDouble(_("datum size"), CoordinateSystem::size, NULL, on_set_datum_size));
+	view_options->m_list.push_back( new PropertyCheck(_("datum size is pixels not mm"), CoordinateSystem::size_is_pixels, NULL, on_set_size_is_pixels));
+	view_options->m_list.push_back( new PropertyCheck(_("show ruler"), m_show_ruler, NULL, on_set_show_ruler));
 	{
 		std::list< wxString > choices;
 		choices.push_back ( wxString ( _("single color") ) );
@@ -3222,7 +3222,7 @@ void HeeksCADapp::GetOptions(std::list<Property *> *list)
 	switch(m_background_mode)
 	{
 	case BackgroundModeOneColor:
-		view_options->m_list.push_back ( new PropertyColor ( _("background color"),  background_color[0], NULL, on_set_background_color0 ) );
+		view_options->m_list.push_back( new PropertyColor ( _("background color"),  background_color[0], NULL, on_set_background_color0 ) );
 		break;
 
 	case BackgroundModeTwoColors:
@@ -3261,7 +3261,7 @@ void HeeksCADapp::GetOptions(std::list<Property *> *list)
 		view_options->m_list.push_back ( new PropertyChoice ( _("grid mode"),  choices, grid_mode, NULL, on_set_grid_mode ) );
 	}
 	view_options->m_list.push_back ( new PropertyColor ( _("face selection color"), face_selection_color, NULL, on_set_face_color ) );
-	view_options->m_list.push_back( new PropertyCheck(_("perspective"), m_current_viewport->m_view_point.GetPerspective(), NULL, on_set_perspective));
+	view_options->m_list.push_back ( new PropertyCheck(_("perspective"), m_current_viewport->m_view_point.GetPerspective(), NULL, on_set_perspective));
 
 	{
 		std::list< wxString > choices;
@@ -3299,41 +3299,41 @@ void HeeksCADapp::GetOptions(std::list<Property *> *list)
 		choices.push_back ( wxString ( _("faces only") ) );
 		view_options->m_list.push_back ( new PropertyChoice ( _("solid view mode"),  choices, m_solid_view_mode, this, on_set_solid_view_mode ) );
 	}
-	view_options->m_list.push_back(new PropertyCheck(_("input uses modal dialog"), m_input_uses_modal_dialog, NULL, on_input_uses_modal_dialog));
-	view_options->m_list.push_back(new PropertyCheck(_("dragging moves objects"), m_dragging_moves_objects, NULL, on_dragging_moves_objects));
-	view_options->m_list.push_back(new PropertyCheck(_("highlight items under mouse"), m_mouse_move_highlighting, NULL, on_set_mouse_move_highlighting));
-	view_options->m_list.push_back ( new PropertyColor ( _("highlight color"), m_highlight_color, NULL, on_set_highlight_color ) );
+	view_options->m_list.push_back( new PropertyCheck(_("input uses modal dialog"), m_input_uses_modal_dialog, NULL, on_input_uses_modal_dialog));
+	view_options->m_list.push_back( new PropertyCheck(_("dragging moves objects"), m_dragging_moves_objects, NULL, on_dragging_moves_objects));
+	view_options->m_list.push_back( new PropertyCheck(_("highlight items under mouse"), m_mouse_move_highlighting, NULL, on_set_mouse_move_highlighting));
+	view_options->m_list.push_back( new PropertyColor ( _("highlight color"), m_highlight_color, NULL, on_set_highlight_color ) );
 
 	list->push_back(view_options);
 
 	PropertyList* digitizing = new PropertyList(_("digitizing"));
-	digitizing->m_list.push_back(new PropertyCheck(_("end"), digitize_end, NULL, on_end_of));
-	digitizing->m_list.push_back(new PropertyCheck(_("intersection"), digitize_inters, NULL, on_intersection));
-	digitizing->m_list.push_back(new PropertyCheck(_("centre"), digitize_centre, NULL, on_centre));
-	digitizing->m_list.push_back(new PropertyCheck(_("midpoint"), digitize_midpoint, NULL, on_mid_point));
-	digitizing->m_list.push_back(new PropertyCheck(_("nearest"), digitize_nearest, NULL, on_nearest));
-	digitizing->m_list.push_back(new PropertyCheck(_("tangent"), digitize_tangent, NULL, on_tangent));
-	digitizing->m_list.push_back(new PropertyCheck(_("coordinates"), digitize_coords, NULL, on_coords));
-	digitizing->m_list.push_back(new PropertyCheck(_("screen"), digitize_screen, NULL, on_relative));
-	digitizing->m_list.push_back(new PropertyLength(_("grid size"), digitizing_grid, NULL, on_grid_edit));
-	digitizing->m_list.push_back(new PropertyCheck(_("snap to grid"), draw_to_grid, NULL, on_grid));
+	digitizing->m_list.push_back( new PropertyCheck(_("end"), digitize_end, NULL, on_end_of));
+	digitizing->m_list.push_back( new PropertyCheck(_("intersection"), digitize_inters, NULL, on_intersection));
+	digitizing->m_list.push_back( new PropertyCheck(_("centre"), digitize_centre, NULL, on_centre));
+	digitizing->m_list.push_back( new PropertyCheck(_("midpoint"), digitize_midpoint, NULL, on_mid_point));
+	digitizing->m_list.push_back( new PropertyCheck(_("nearest"), digitize_nearest, NULL, on_nearest));
+	digitizing->m_list.push_back( new PropertyCheck(_("tangent"), digitize_tangent, NULL, on_tangent));
+	digitizing->m_list.push_back( new PropertyCheck(_("coordinates"), digitize_coords, NULL, on_coords));
+	digitizing->m_list.push_back( new PropertyCheck(_("screen"), digitize_screen, NULL, on_relative));
+	digitizing->m_list.push_back( new PropertyLength(_("grid size"), digitizing_grid, NULL, on_grid_edit));
+	digitizing->m_list.push_back( new PropertyCheck(_("snap to grid"), draw_to_grid, NULL, on_grid));
 	list->push_back(digitizing);
 
 	PropertyList* correlation_properties = new PropertyList(_("correlation"));
-	correlation_properties->m_list.push_back(new PropertyDouble(_("Minimum correlation factor (0.0 (nothing like it) -> 1.0 (perfect match))"), m_min_correlation_factor, NULL, on_set_min_correlation_factor));
-	correlation_properties->m_list.push_back(new PropertyDouble(_("Maximum scale threshold (1.0 - must be same size, 1.5 (can be half as big again or 2/3 size)"), m_max_scale_threshold, NULL, on_set_max_scale_threshold));
-	correlation_properties->m_list.push_back(new PropertyInt(_("Number of sample points"), m_number_of_sample_points, NULL, on_set_number_of_sample_points));
-	correlation_properties->m_list.push_back(new PropertyCheck( _("Correlate by color"), m_correlate_by_color, NULL, on_set_correlate_by_color));
+	correlation_properties->m_list.push_back( new PropertyDouble(_("Minimum correlation factor (0.0 (nothing like it) -> 1.0 (perfect match))"), m_min_correlation_factor, NULL, on_set_min_correlation_factor));
+	correlation_properties->m_list.push_back( new PropertyDouble(_("Maximum scale threshold (1.0 - must be same size, 1.5 (can be half as big again or 2/3 size)"), m_max_scale_threshold, NULL, on_set_max_scale_threshold));
+	correlation_properties->m_list.push_back( new PropertyInt(_("Number of sample points"), m_number_of_sample_points, NULL, on_set_number_of_sample_points));
+	correlation_properties->m_list.push_back( new PropertyCheck( _("Correlate by color"), m_correlate_by_color, NULL, on_set_correlate_by_color));
 	list->push_back(correlation_properties);
 
 	PropertyList* drawing = new PropertyList(_("drawing"));
-	drawing->m_list.push_back ( new PropertyColor ( _("current color"),  current_color, NULL, on_set_current_color ) );
-	drawing->m_list.push_back(new PropertyLength(_("geometry tolerance"), m_geom_tol, NULL, on_set_geom_tol));
-	drawing->m_list.push_back(new PropertyLength(_("sketch reorder tolerance"), m_sketch_reorder_tol, NULL, on_set_sketch_reorder_tol));
-	drawing->m_list.push_back(new PropertyLength(_("face to sketch deviaton"), FaceToSketchTool::deviation, NULL, on_set_face_to_sketch_deviation));
-	drawing->m_list.push_back(new PropertyCheck(_("Use old solid fuse ( to prevent coplanar faces )"), useOldFuse, NULL, on_useOldFuse));
-	drawing->m_list.push_back(new PropertyCheck(_("Extrude makes a solid"), m_extrude_to_solid, NULL, on_extrude_to_solid));
-	drawing->m_list.push_back(new PropertyDouble(_("Solid revolution angle"), m_revolve_angle, NULL, on_revolve_angle));
+	drawing->m_list.push_back( new PropertyColor ( _("current color"),  current_color, NULL, on_set_current_color ) );
+	drawing->m_list.push_back( new PropertyLength(_("geometry tolerance"), m_geom_tol, NULL, on_set_geom_tol));
+	drawing->m_list.push_back( new PropertyLength(_("sketch reorder tolerance"), m_sketch_reorder_tol, NULL, on_set_sketch_reorder_tol));
+	drawing->m_list.push_back( new PropertyLength(_("face to sketch deviaton"), FaceToSketchTool::deviation, NULL, on_set_face_to_sketch_deviation));
+	drawing->m_list.push_back( new PropertyCheck(_("Use old solid fuse ( to prevent coplanar faces )"), useOldFuse, NULL, on_useOldFuse));
+	drawing->m_list.push_back( new PropertyCheck(_("Extrude makes a solid"), m_extrude_to_solid, NULL, on_extrude_to_solid));
+	drawing->m_list.push_back( new PropertyDouble(_("Solid revolution angle"), m_revolve_angle, NULL, on_revolve_angle));
 	list->push_back(drawing);
 
 	for(std::list<Plugin>::iterator It = m_loaded_libraries.begin(); It != m_loaded_libraries.end(); It++){
@@ -3345,42 +3345,42 @@ void HeeksCADapp::GetOptions(std::list<Property *> *list)
 	}
 
 	PropertyList* selection_filter = new PropertyList(_("selection filter"));
-	selection_filter->m_list.push_back(new PropertyCheck(_("point"), (m_marked_list->m_filter & MARKING_FILTER_POINT) != 0, NULL, on_sel_filter_point));
-	selection_filter->m_list.push_back(new PropertyCheck(_("line"), (m_marked_list->m_filter & MARKING_FILTER_LINE) != 0, NULL, on_sel_filter_line));
-	selection_filter->m_list.push_back(new PropertyCheck(_("arc"), (m_marked_list->m_filter & MARKING_FILTER_ARC) != 0, NULL, on_sel_filter_arc));
-	selection_filter->m_list.push_back(new PropertyCheck(_("infinite line"), (m_marked_list->m_filter & MARKING_FILTER_ILINE) != 0, NULL, on_sel_filter_iline));
-	selection_filter->m_list.push_back(new PropertyCheck(_("circle"), (m_marked_list->m_filter & MARKING_FILTER_CIRCLE) != 0, NULL, on_sel_filter_circle));
-	selection_filter->m_list.push_back(new PropertyCheck(_("edge"), (m_marked_list->m_filter & MARKING_FILTER_EDGE) != 0, NULL, on_sel_filter_edge));
-	selection_filter->m_list.push_back(new PropertyCheck(_("face"), (m_marked_list->m_filter & MARKING_FILTER_FACE) != 0, NULL, on_sel_filter_face));
-	selection_filter->m_list.push_back(new PropertyCheck(_("vertex"), (m_marked_list->m_filter & MARKING_FILTER_VERTEX) != 0, NULL, on_sel_filter_vertex));
-	selection_filter->m_list.push_back(new PropertyCheck(_("solid"), (m_marked_list->m_filter & MARKING_FILTER_SOLID) != 0, NULL, on_sel_filter_solid));
-	selection_filter->m_list.push_back(new PropertyCheck(_("stl_solid"), (m_marked_list->m_filter & MARKING_FILTER_STL_SOLID) != 0, NULL, on_sel_filter_stl_solid));
-	selection_filter->m_list.push_back(new PropertyCheck(_("wire"), (m_marked_list->m_filter & MARKING_FILTER_WIRE) != 0, NULL, on_sel_filter_wire));
-	selection_filter->m_list.push_back(new PropertyCheck(_("sketch"), (m_marked_list->m_filter & MARKING_FILTER_SKETCH) != 0, NULL, on_sel_filter_sketch));
-	selection_filter->m_list.push_back(new PropertyCheck(_("image"), (m_marked_list->m_filter & MARKING_FILTER_IMAGE) != 0, NULL, on_sel_filter_image));
-	selection_filter->m_list.push_back(new PropertyCheck(_("coordinate system"), (m_marked_list->m_filter & MARKING_FILTER_COORDINATE_SYSTEM) != 0, NULL, on_sel_filter_coordinate_sys));
-	selection_filter->m_list.push_back(new PropertyCheck(_("text"), (m_marked_list->m_filter & MARKING_FILTER_TEXT) != 0, NULL, on_sel_filter_text));
-	selection_filter->m_list.push_back(new PropertyCheck(_("dimension"), (m_marked_list->m_filter & MARKING_FILTER_DIMENSION) != 0, NULL, on_sel_filter_dimension));
-	selection_filter->m_list.push_back(new PropertyCheck(_("ruler"), (m_marked_list->m_filter & MARKING_FILTER_RULER) != 0, NULL, on_sel_filter_ruler));
-	selection_filter->m_list.push_back(new PropertyCheck(_("pad"), (m_marked_list->m_filter & MARKING_FILTER_PAD) != 0, NULL, on_sel_filter_pad));
-	selection_filter->m_list.push_back(new PropertyCheck(_("part"), (m_marked_list->m_filter & MARKING_FILTER_PART) != 0, NULL, on_sel_filter_part));
-	selection_filter->m_list.push_back(new PropertyCheck(_("pocket"), (m_marked_list->m_filter & MARKING_FILTER_POCKETSOLID) != 0, NULL, on_sel_filter_pocket));
+	selection_filter->m_list.push_back( new PropertyCheck(_("point"), (m_marked_list->m_filter & MARKING_FILTER_POINT) != 0, NULL, on_sel_filter_point));
+	selection_filter->m_list.push_back( new PropertyCheck(_("line"), (m_marked_list->m_filter & MARKING_FILTER_LINE) != 0, NULL, on_sel_filter_line));
+	selection_filter->m_list.push_back( new PropertyCheck(_("arc"), (m_marked_list->m_filter & MARKING_FILTER_ARC) != 0, NULL, on_sel_filter_arc));
+	selection_filter->m_list.push_back( new PropertyCheck(_("infinite line"), (m_marked_list->m_filter & MARKING_FILTER_ILINE) != 0, NULL, on_sel_filter_iline));
+	selection_filter->m_list.push_back( new PropertyCheck(_("circle"), (m_marked_list->m_filter & MARKING_FILTER_CIRCLE) != 0, NULL, on_sel_filter_circle));
+	selection_filter->m_list.push_back( new PropertyCheck(_("edge"), (m_marked_list->m_filter & MARKING_FILTER_EDGE) != 0, NULL, on_sel_filter_edge));
+	selection_filter->m_list.push_back( new PropertyCheck(_("face"), (m_marked_list->m_filter & MARKING_FILTER_FACE) != 0, NULL, on_sel_filter_face));
+	selection_filter->m_list.push_back( new PropertyCheck(_("vertex"), (m_marked_list->m_filter & MARKING_FILTER_VERTEX) != 0, NULL, on_sel_filter_vertex));
+	selection_filter->m_list.push_back( new PropertyCheck(_("solid"), (m_marked_list->m_filter & MARKING_FILTER_SOLID) != 0, NULL, on_sel_filter_solid));
+	selection_filter->m_list.push_back( new PropertyCheck(_("stl_solid"), (m_marked_list->m_filter & MARKING_FILTER_STL_SOLID) != 0, NULL, on_sel_filter_stl_solid));
+	selection_filter->m_list.push_back( new PropertyCheck(_("wire"), (m_marked_list->m_filter & MARKING_FILTER_WIRE) != 0, NULL, on_sel_filter_wire));
+	selection_filter->m_list.push_back( new PropertyCheck(_("sketch"), (m_marked_list->m_filter & MARKING_FILTER_SKETCH) != 0, NULL, on_sel_filter_sketch));
+	selection_filter->m_list.push_back( new PropertyCheck(_("image"), (m_marked_list->m_filter & MARKING_FILTER_IMAGE) != 0, NULL, on_sel_filter_image));
+	selection_filter->m_list.push_back( new PropertyCheck(_("coordinate system"), (m_marked_list->m_filter & MARKING_FILTER_COORDINATE_SYSTEM) != 0, NULL, on_sel_filter_coordinate_sys));
+	selection_filter->m_list.push_back( new PropertyCheck(_("text"), (m_marked_list->m_filter & MARKING_FILTER_TEXT) != 0, NULL, on_sel_filter_text));
+	selection_filter->m_list.push_back( new PropertyCheck(_("dimension"), (m_marked_list->m_filter & MARKING_FILTER_DIMENSION) != 0, NULL, on_sel_filter_dimension));
+	selection_filter->m_list.push_back( new PropertyCheck(_("ruler"), (m_marked_list->m_filter & MARKING_FILTER_RULER) != 0, NULL, on_sel_filter_ruler));
+	selection_filter->m_list.push_back( new PropertyCheck(_("pad"), (m_marked_list->m_filter & MARKING_FILTER_PAD) != 0, NULL, on_sel_filter_pad));
+	selection_filter->m_list.push_back( new PropertyCheck(_("part"), (m_marked_list->m_filter & MARKING_FILTER_PART) != 0, NULL, on_sel_filter_part));
+	selection_filter->m_list.push_back( new PropertyCheck(_("pocket"), (m_marked_list->m_filter & MARKING_FILTER_POCKETSOLID) != 0, NULL, on_sel_filter_pocket));
 	list->push_back(selection_filter);
 
 	PropertyList* file_options = new PropertyList(_("file options"));
 	PropertyList* dxf_options = new PropertyList(_("DXF"));
-	dxf_options->m_list.push_back(new PropertyCheck(_("make sketch"), HeeksDxfRead::m_make_as_sketch, NULL, on_dxf_make_sketch));
-	dxf_options->m_list.push_back(new PropertyCheck(_("ignore errors where possible"), HeeksDxfRead::m_ignore_errors, NULL, on_sel_dxf_read_errors));
-	dxf_options->m_list.push_back(new PropertyCheck(_("read points"), HeeksDxfRead::m_read_points, NULL, on_dxf_read_points));
+	dxf_options->m_list.push_back( new PropertyCheck(_("make sketch"), HeeksDxfRead::m_make_as_sketch, NULL, on_dxf_make_sketch));
+	dxf_options->m_list.push_back( new PropertyCheck(_("ignore errors where possible"), HeeksDxfRead::m_ignore_errors, NULL, on_sel_dxf_read_errors));
+	dxf_options->m_list.push_back( new PropertyCheck(_("read points"), HeeksDxfRead::m_read_points, NULL, on_dxf_read_points));
 	dxf_options->m_list.push_back( new PropertyString(_("Layer Name Suffixes To Discard"), HeeksDxfRead::m_layer_name_suffixes_to_discard, this, on_edit_layer_name_suffixes_to_discard));
-	dxf_options->m_list.push_back(new PropertyCheck(_("add uninstanced blocks"), HeeksDxfRead::m_add_uninstanced_blocks, NULL, on_add_uninstanced_blocks));
+	dxf_options->m_list.push_back( new PropertyCheck(_("add uninstanced blocks"), HeeksDxfRead::m_add_uninstanced_blocks, NULL, on_add_uninstanced_blocks));
 
 	file_options->m_list.push_back(dxf_options);
 	PropertyList* stl_options = new PropertyList(_("STL"));
-	stl_options->m_list.push_back(new PropertyDouble(_("stl save facet tolerance"), m_stl_facet_tolerance, NULL, on_stl_facet_tolerance));
+	stl_options->m_list.push_back( new PropertyDouble(_("stl save facet tolerance"), m_stl_facet_tolerance, NULL, on_stl_facet_tolerance));
 	stl_options->m_list.push_back( new PropertyCheck(_("STL save binary"), m_stl_save_as_binary, NULL, on_set_stl_save_binary));
 	file_options->m_list.push_back(stl_options);
-	file_options->m_list.push_back(new PropertyInt(_("auto save interval (in minutes)"), m_auto_save_interval, NULL, on_set_auto_save_interval));
+	file_options->m_list.push_back( new PropertyInt(_("auto save interval (in minutes)"), m_auto_save_interval, NULL, on_set_auto_save_interval));
 	list->push_back(file_options);
 
 #ifndef WIN32

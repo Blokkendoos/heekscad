@@ -7,7 +7,8 @@
 
 #include "Property.h"
 
-class PropertyChoice:public Property{
+class PropertyChoice:public Property
+{
 private:
 	wxString title;
 
@@ -20,8 +21,8 @@ public:
 	~PropertyChoice();
 
 	// Property's virtual functions
-	int get_property_type(){return ChoicePropertyType;}
-	bool property_editable()const{return m_callbackfunc != NULL;}
+	int get_property_type() {return ChoicePropertyType;}
+	bool property_editable()const {return m_callbackfunc != NULL;}
 	Property *MakeACopy(void)const;
 	const wxChar* GetShortString(void)const;
 };

@@ -7,7 +7,8 @@
 #include "Property.h"
 #include "HeeksColor.h"
 
-class PropertyColor:public Property{
+class PropertyColor:public Property
+{
 private:
 	wxString title;
 

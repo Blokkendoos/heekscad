@@ -6,7 +6,13 @@
 
 #include "PropertyDouble.h"
 
-PropertyDouble::PropertyDouble(const wxChar* t, double initial_value, HeeksObj* object, void(*callbackfunc)(double, HeeksObj*), void(*selectcallback)(HeeksObj*)):Property(object, selectcallback){
+PropertyDouble::PropertyDouble(const wxChar* t
+							 , double initial_value
+							 , HeeksObj* object
+							 , void(*callbackfunc)(double, HeeksObj*)
+							 , void(*selectcallback)(HeeksObj*)
+							 ) : Property(object, selectcallback)
+{
 	m_initial_value = initial_value;
 	m_callbackfunc = callbackfunc;
 	m_callbackfuncidx = 0;
@@ -14,7 +20,12 @@ PropertyDouble::PropertyDouble(const wxChar* t, double initial_value, HeeksObj* 
 	has_index = false;
 }
 
-PropertyDouble::PropertyDouble(const wxChar* t, double initial_value, HeeksObj* object, void(*callbackfunc)(double, HeeksObj*, int), int index, void(*selectcallback)(HeeksObj*)):Property(object, selectcallback)
+PropertyDouble::PropertyDouble(const wxChar* t
+							 , double initial_value, HeeksObj* object
+							 , void(*callbackfunc)(double, HeeksObj*, int)
+							 , int index
+							 , void(*selectcallback)(HeeksObj*)
+							 ) : Property(object, selectcallback)
 {
 	m_initial_value = initial_value;
 	m_callbackfuncidx = callbackfunc;
@@ -25,8 +36,7 @@ PropertyDouble::PropertyDouble(const wxChar* t, double initial_value, HeeksObj* 
 	m_index = index;
 }
 
-PropertyDouble::~PropertyDouble(){
-}
+PropertyDouble::~PropertyDouble(){}
 
 const wxChar* PropertyDouble::GetShortString(void)const{
 	return title.c_str();

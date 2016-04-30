@@ -3,10 +3,18 @@ cmake_minimum_required( VERSION 2.6 )
 
 add_definitions ( -Wall )
 
-find_package( wxWidgets REQUIRED COMPONENTS base core gl )
+find_package( wxWidgets REQUIRED COMPONENTS base core gl aui )
+set( wxWidgets_LIBRARIES "${wxWidgets_LIBRARIES} -liconv -lwx_osx_cocoau_aui-3.1 -lwx_osx_cocoau_propgrid-3.1" )
+string (REPLACE ";" " " wxWidgets_LIBRARIES "${wxWidgets_LIBRARIES}")
+set( wxWidgets_INCLUDE_DIRS "/opt/local/Library/Frameworks/wxWidgets.framework/Versions/wxWidgets/3.1/lib/wx/include/osx_cocoa-unicode-3.1;/opt/local/Library/Frameworks/wxWidgets.framework/Versions/wxWidgets/3.1/include/wx-3.1" )
+MESSAGE(STATUS "wxWidgets_LIBRARIES is: " ${wxWidgets_LIBRARIES})
+MESSAGE(STATUS "wxWidgets_INCLUDE_DIRS: " ${wxWidgets_INCLUDE_DIRS})
 
 #set additionnal CMake module path
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
+set(CMAKE_MACOSX_RPATH 0)
+LINK_DIRECTORIES(/opt/local/lib)
 
 #find OCE or OpenCASCADE
 set( CASCADE_LIBS TKernel )
@@ -26,7 +34,7 @@ endif()
 
 
 #find libarea
-find_package( libarea REQUIRED )
+#find_package( libarea REQUIRED )
 
 if( APPLE )
   # Apple includes two different openGL implementations, for Carbon and X11.  We want X11

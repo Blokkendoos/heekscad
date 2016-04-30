@@ -88,7 +88,7 @@ void CSvgRead::Read(const wxChar* filepath)
 	}
 
 	// loop through all the objects
-	for(pElem = hRoot.FirstChildElement().Element(); pElem;	pElem = pElem->NextSiblingElement())
+	for(pElem = hRoot.FirstChildElement().Element(); pElem; pElem = pElem->NextSiblingElement())
 	{
 		ReadSVGElement(pElem);
 	}
@@ -126,43 +126,28 @@ void CSvgRead::ReadSVGElement(TiXmlElement* pElem)
 	}
 
 	if(name == "path")
-	{
 		ReadPath(pElem);
-	}
 
-	if(name == "rect")
-	{
+	else if(name == "rect")
 		ReadRect(pElem);
-	}
 
-	if(name == "circle")
-	{
+	else if(name == "circle")
 		ReadCircle(pElem);
-	}
 
-	if(name == "ellipse")
-	{
+	else if(name == "ellipse")
 		ReadEllipse(pElem);
-	}
 	
-	if(name == "line")
-	{
+	else if(name == "line")
 		ReadLine(pElem);
-	}
 
-	if(name == "polyline")
-	{
+	else if(name == "polyline")
 		ReadPolyline(pElem,false);
-	}
 
-	if(name == "polygon")
-	{
+	else if(name == "polygon")
 		ReadPolyline(pElem,true);
-	}
 
 	m_transform = m_transform_stack.back();
-	m_transform_stack.pop_back();
-	
+	m_transform_stack.pop_back();	
 
 }
 
@@ -222,7 +207,7 @@ void CSvgRead::ReadTransform(TiXmlElement *pElem)
 				//:JonPry
 				
 				// ntrsf = make_matrix(m);
-				// m_transform.Multiply(ntrsf);	
+				// m_transform.Multiply(ntrsf); 
 				pos+=count;
 			}
 			if(strncmp(&d[pos],"skewX",5)==0)
@@ -424,7 +409,7 @@ cout << '@' << text <<'@';
 	return npt;
 }
 
-gp_Pnt CSvgRead::ReadLine(const char *text,gp_Pnt ppnt,bool isupper)
+gp_Pnt CSvgRead::ReadLine(const char *text, gp_Pnt ppnt, bool isupper)
 {
 	double x, y;
 	sscanf(text, "%lf%lf", &x, &y);
@@ -444,7 +429,7 @@ void CSvgRead::ReadClose(gp_Pnt ppnt,gp_Pnt spnt)
 	OnReadLine(ppnt,spnt);
 }
 
-gp_Pnt CSvgRead::ReadHorizontal(const char *text,gp_Pnt ppnt,bool isupper)
+gp_Pnt CSvgRead::ReadHorizontal(const char *text, gp_Pnt ppnt, bool isupper)
 {
 	double x;
 	sscanf(text, "%lf", &x);
@@ -479,8 +464,8 @@ cout << "x1=" << x1 << "y1=" << y1 << "x2=" << x2 << "y2=" << y2 << "x3=" << x3 
 	if(!isupper)
 	{
 		x1+=ppnt.X(); y1+=ppnt.Y();
-//		x2+=x1;	y2+=y1;
-//		x3+=x2;	y3+=y2;
+//		x2+=x1; y2+=y1;
+//		x3+=x2; y3+=y2;
 		x2+=ppnt.X(); y2+=ppnt.Y();
 		x3+=ppnt.X(); y3+=ppnt.Y();
 cout << "x1=" << x1 << "y1=" << y1 << "x2=" << x2 << "y2=" << y2 << "x3=" << x3 << "y3=" << y3 << "\n";
@@ -499,13 +484,13 @@ struct TwoPoints CSvgRead::ReadCubic(const char *text,gp_Pnt ppnt, gp_Pnt pcpnt,
 	struct TwoPoints retpts;
 	double x2, y2, x3, y3;
 	sscanf(text, "%lf%lf%lf%lf", &x2, &y2, &x3, &y3);
-	y2 = -y2; y3 = -y3;	
+	y2 = -y2; y3 = -y3; 
 
 	if(!isupper)
 	{
 		x2+=ppnt.X(); y2+=ppnt.Y();
 		x3+=ppnt.X(); y3+=ppnt.Y();
-	//	x3+=x2;	y3+=y2;
+	//	x3+=x2; y3+=y2;
 	}
 
 	gp_Dir dir=ppnt.XYZ()-pcpnt.XYZ();
@@ -639,15 +624,19 @@ gp_Pnt CSvgRead::ReadEllipse(const char *text,gp_Pnt ppnt,bool isupper)
 }
 
 // because we can no longer take the first numbers after a command, we have to jump values we have already read in
-int CSvgRead::JumpValues(const char *text, int number){
+int CSvgRead::JumpValues(const char *text, int number)
+{
 	int pos=0;
+	// skip a space following the cmd
 	if(text[pos]==32)
 		pos++;
 	while(number >0 && text[pos]!=0){
+	    // space
 		if(text[pos]==32){
 			number--;
-		}else if(text[pos]==0){
-			return pos;
+	    // alphabetic char other than decimal point
+		}else if(text[pos]!=46 && isalpha(text[pos])){
+			number--;
 		}
 		pos++;
 	}
@@ -657,6 +646,8 @@ int CSvgRead::JumpValues(const char *text, int number){
 void CSvgRead::ReadPath(TiXmlElement* pElem)
 {
 	char cmd;
+	char lastCmd;
+	
 	// get the attributes
 	for(TiXmlAttribute* a = pElem->FirstAttribute(); a; a = a->Next())
 	{
@@ -672,6 +663,7 @@ void CSvgRead::ReadPath(TiXmlElement* pElem)
 			gp_Pnt ppnt(0,0,0);
 			gp_Pnt pcpnt(0,0,0);
 			int pos = 0;
+            // an uppercase SVG command means absolute coordinates, lowercase means relative coordinates
 			cmd = 'l';
 			while(1){
 // if we are looking at a command letter reset the cmd variable
@@ -679,6 +671,7 @@ void CSvgRead::ReadPath(TiXmlElement* pElem)
 					cmd = d[pos];
 					pos++;
 				}
+
 				if(toupper(cmd) == 'M'){
 					// make a sketch
 					spnt = ReadStart(&d[pos],ppnt,isupper(cmd)!=0);
@@ -710,7 +703,7 @@ void CSvgRead::ReadPath(TiXmlElement* pElem)
 					pos+=JumpValues(&d[pos],6);
 				}
 				else if(toupper(cmd) == 'S'){
-                    // add a cubic bezier curve ( short hand)
+					// add a cubic bezier curve ( short hand)
 					struct TwoPoints ret = ReadCubic(&d[pos],ppnt,pcpnt,isupper(cmd)!=0);
 					ppnt = ret.ppnt;
 					pcpnt = ret.pcpnt;
@@ -724,7 +717,7 @@ void CSvgRead::ReadPath(TiXmlElement* pElem)
 					pos+=JumpValues(&d[pos],4);
 				}
 				else if(toupper(cmd) == 'T'){
-               		// add a quadratic bezier curve 
+					// add a quadratic bezier curve 
 					struct TwoPoints ret = ReadQuadratic(&d[pos],ppnt,pcpnt,isupper(cmd)!=0);
 					ppnt = ret.ppnt;
 					pcpnt = ret.pcpnt;
@@ -789,7 +782,7 @@ void HeeksSvgRead::OnReadCubic(gp_Pnt s, gp_Pnt c1, gp_Pnt c2, gp_Pnt e)
 #endif
 	Handle(Geom_BezierCurve) curve = new Geom_BezierCurve(poles);
 #ifdef _DEBUG
-#define new  WXDEBUG_NEW
+#define new	 WXDEBUG_NEW
 #endif
 	GeomConvert_CompCurveToBSplineCurve convert(curve);
 
@@ -810,7 +803,7 @@ void HeeksSvgRead::OnReadQuadratic(gp_Pnt s, gp_Pnt c, gp_Pnt e)
 #endif
 	Handle(Geom_BezierCurve) curve = new Geom_BezierCurve(poles);
 #ifdef _DEBUG
-#define new  WXDEBUG_NEW
+#define new	 WXDEBUG_NEW
 #endif
 	GeomConvert_CompCurveToBSplineCurve convert(curve);
 
